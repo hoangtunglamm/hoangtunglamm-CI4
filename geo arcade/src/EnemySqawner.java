@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
 
-public class EnemySqawner {
+public class EnemySqawner extends GameObject {
     private Vector<Enemy> enemies;
     private int count = 0;
     private Random random;
@@ -15,14 +15,13 @@ public class EnemySqawner {
         this.random = new Random();
     }
 
+    @Override
     public void run() {
         if (this.count >= 40) {
-            try {
-                Enemy enemy = new Enemy(ImageIO.read(new File("resources/square/enemy_square_medium.png")), this.random.nextInt(400), 0, 0, random.nextInt(3) + 2);
-                this.enemies.add(enemy);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Enemy enemy = new Enemy();
+            enemy.x = this.random.nextInt(400);
+            enemy.dy = random.nextInt(3) + 2;
+            this.enemies.add(enemy);
             this.count = 0;
         } else {
             this.count += 1;
@@ -31,6 +30,7 @@ public class EnemySqawner {
         this.enemies.forEach(enemy -> enemy.run());
     }
 
+    @Override
     public void render(Graphics graphics) {
         this.enemies.forEach(enemy -> enemy.render(graphics));
     }
