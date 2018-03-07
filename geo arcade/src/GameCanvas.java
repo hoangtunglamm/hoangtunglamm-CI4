@@ -40,11 +40,9 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupPlayer() {
-        try {
-            this.player = new Player(ImageIO.read(new File("resources/player/straight.png")), 200, 300);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.player = new Player();
+        this.player.x = 200;
+        this.player.y = 300;
     }
 
     private void setupBackground() {
@@ -74,13 +72,11 @@ public class GameCanvas extends JPanel {
 
     private void createSquare() {
         if (this.countSquare >= 30) {
-            try {
-                Square square = new Square(ImageIO.read(new File("resources/square/enemy_square_small.png")), 20, 0, 0, 4);
-                this.squareVector.add(square);
-                this.countSquare = 0;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Square square = new Square();
+            square.x = 20;
+            square.dy = 3;
+            this.squareVector.add(square);
+            this.countSquare = 0;
         } else {
             this.countSquare += 1;
         }
@@ -93,13 +89,12 @@ public class GameCanvas extends JPanel {
 
     private void createBullet() {
         if (this.countBullet >= 30) {
-            try {
-                Bullet bullet = new Bullet(ImageIO.read(new File("resources/player/player_bullet.png")), player.x , player.y, 0, -4);
-                this.bulletVector.add(bullet);
-                this.countBullet = 0;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Bullet bullet = new Bullet();
+            bullet.x = this.player.x;
+            bullet.y = this.player.y;
+            bullet.dy = -4;
+            this.bulletVector.add(bullet);
+            this.countBullet = 0;
         } else {
             this.countBullet += 1;
         }
