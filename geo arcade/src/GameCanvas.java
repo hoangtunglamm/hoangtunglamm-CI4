@@ -10,11 +10,8 @@ public class GameCanvas extends JPanel {
 
     BufferedImage background;
     Player player;
-    Vector<Square> squareVector;
-    Vector<Bullet> bulletVector;
     BufferedImage backBuffered;
     Graphics graphics;
-    EnemySqawner enemySqawner;
 
     int countSquare = 0;
     int countBullet = 0;
@@ -24,9 +21,7 @@ public class GameCanvas extends JPanel {
         this.setupBackBuffered();
         this.setupBackground();
         this.setupPlayer();
-        this.squareVector = new Vector<>();
-        this.bulletVector = new Vector<>();
-        this.enemySqawner = new EnemySqawner();
+        GameObject.add(new EnemySqawner());
     }
 
     private void setup() {
@@ -43,6 +38,7 @@ public class GameCanvas extends JPanel {
         this.player = new Player();
         this.player.x = 200;
         this.player.y = 300;
+        GameObject.add(this.player);
     }
 
     private void setupBackground() {
@@ -60,14 +56,11 @@ public class GameCanvas extends JPanel {
 
     public void runAll() {
         // Shoot Bullet
-        this.runBullets();
-        this.runSquares();
-        this.enemySqawner.run();
+        GameObject.runAll();
     }
 
     private void runSquares() {
         this.createSquare();
-        this.squareVector.forEach(square -> square.run());
     }
 
     private void createSquare() {
@@ -75,8 +68,8 @@ public class GameCanvas extends JPanel {
             Square square = new Square();
             square.x = 20;
             square.dy = 3;
-            this.squareVector.add(square);
             this.countSquare = 0;
+            GameObject.add(square);
         } else {
             this.countSquare += 1;
         }
@@ -84,7 +77,6 @@ public class GameCanvas extends JPanel {
 
     private void runBullets() {
         this.createBullet();
-        this.bulletVector.forEach(bullet -> bullet.run());
     }
 
     private void createBullet() {
@@ -93,8 +85,8 @@ public class GameCanvas extends JPanel {
             bullet.x = this.player.x;
             bullet.y = this.player.y;
             bullet.dy = -4;
-            this.bulletVector.add(bullet);
             this.countBullet = 0;
+            GameObject.add(bullet);
         } else {
             this.countBullet += 1;
         }
@@ -102,10 +94,7 @@ public class GameCanvas extends JPanel {
 
     public void renderAll() {
         this.graphics.drawImage(this.background, 0, 0, null);
-        this.player.render(this.graphics);
-        this.squareVector.forEach(square -> square.render(graphics));
-        this.bulletVector.forEach(bullet -> bullet.render(graphics));
-        this.enemySqawner.render(this.graphics);
+        GameObject.renderAll(this.graphics);
         this.repaint();
     }
 }
